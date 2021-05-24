@@ -1,41 +1,47 @@
-const QrcodeModel = require('../model/QrCode');
+const QrcodeModel = require("../model/QrCode");
+// const cryptoRandomString = require("crypto-random-string");
 
-class QrcodeController{
-    static post(req,res) {
-        const link = 'https://github.com/AnggaChelsea',
-        unixcode = [];    
-        const rand = Math.random()*100;
-        unixcode.push(rand);
-        const qrcode = new QrcodeModel({
-            link:link,
-            unixcode:unixcode
-        })
-        // console.log(qrcode)
-        qrcode.save()
-        .then((qrcode) => {
-            res.send(200).send({message: 'success', data:qrcode})
-        })
-        .catch((err) => {
-            console.log(err)
-        })
+class QrcodeController {
+  static async create(req, res, next) {
+    try {
+      const test = QrcodeController.makeid(8);
+      const qrcode = await QrcodeModel.create({ serial_number: `OSY${test}` });
+      res.status(200).json({ success: true, message: "success", data: qrcode });
+    } catch (error) {
+      next(error);
     }
-    static create(req, res){
-        const qrnew = new QrcodeModel({
-            link:req.body.link,
-            unixcode:req.body.unixcode
-        })
-        const no = 100
-        for(let i = 0; i < no ; i++){
-            console.log(qrnew[i])
-        }
-        qrnew.save()
-        .then((qrnew) => {
-            res.send(200).send({message: 'success generate', data:qrnew})
-        })
-        .catch((err) => {
-            error(err)
-        })
+  }
+
+  static async validate(req, res, next) {
+    try {
+      const numberValidated = await QrcodeModel.findOne({
+        serial_number: req.body.serial_number,
+      });
+      if (numberValidated) {
+        res.status(200).json({
+          success: true,
+          message: "Serial Number Tersedia",
+          data: numberValidated,
+        });
+      } else {
+        throw { name: `SN_NONEXIST` };
+      }
+    } catch (err) {
+      next(err);
     }
+  }
+
+  static makeid(length) {
+    const result = [];
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result.push(
+        characters.charAt(Math.floor(Math.random() * charactersLength))
+      );
+    }
+    return result.join("");
+  }
 }
 
 module.exports = QrcodeController;
