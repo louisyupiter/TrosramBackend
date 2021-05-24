@@ -6,5 +6,6 @@ const PembeliSchema = new Schema({
     alamatBengkel:{type:String, required:true},
     pemilikBengkel:{type:String, required:true}
 });
+
 const Pembeli = mongoose.model('Pembeli', PembeliSchema);
 module.exports = Pembeli;

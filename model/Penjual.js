@@ -1,18 +1,17 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 
-const PenjualSchema = new Schema({
-  _idQrCode: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "QrCode",
-    required: true,
-  },
-  _idPembeli: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Pembeli",
-    required: true,
-  },
-  serailNumber: { type: String, required: true },
+const penjualShema = new Schema({
+  // _idQrCode: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: "QrCode",                                                                      
+  // },
+  // _idPembeli: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: "Pembeli",
+
+  // },
+  serialNumber: { type: Number, required: true },
   namaPembeli: { type: String, required: true },
   NoPol: { type: String, required: true },
   MerkMobil: { type: String, required: true },
@@ -21,5 +20,7 @@ const PenjualSchema = new Schema({
   image: { type: String, required: true },
   uploadVideo: { type: String, required: true },
 });
-const Penjual = mongoose.model("Penjual", PenjualSchema);
+const Penjual = mongoose.model('Penjual', penjualShema);
 module.exports = Penjual;
+
+
