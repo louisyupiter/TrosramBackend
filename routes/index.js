@@ -1,12 +1,12 @@
 const router = require('express').Router();
-const pembeli = require('./pemebli');
+const pembeli = require('./pembeli');
 const penjual = require('./penjual');
 const qrcode = require('./qrcode');
-const input = require('./input');
+const errorHandler = require('../middleware/err');
 
-router.use('/pembeli', pembeli);
+router.use('/code', qrcode);
 router.use('/penjual', penjual);
-router.use('/code', qrcode)
-router.use('/serialnumber', input)
+router.use('/pembeli', pembeli);
+router.use(errorHandler);
 
 module.exports = router

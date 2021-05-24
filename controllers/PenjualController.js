@@ -1,69 +1,34 @@
 const PenjualModel = require("../model/Penjual");
-const multer = require('multer');
-
 
 class PenjualController {
-  static post(req, res) {
-   
-    const {
-      serialNumber,
-      namaPembeli,
-      NoPol,
-      MerkMobil,
-      NoInvoice,
-      Deskripsi,
-      uploadVideo,
-    } = req.body;
-    const image = req.file
-    const penjual = new PenjualModel({
-      serialNumber,
-      namaPembeli,
-      NoPol,
-      MerkMobil,
-      NoInvoice,
-      Deskripsi,
-      image,
-      uploadVideo,
-    });
-
-    penjual
-      .save()
-      .then((penjual) => {
-        res.status(200).send({ message: "success upload data", data: penjual });
-      })
-      .catch((err) => {
-        res.status(500).send({ message: "error", err: err });
+  static async create(req, res, next) {
+    try {
+      const penjual = await PenjualModel.create({
+        nama_bengkel: req.body.nama_bengkel,
+        alamat_bengkel: req.body.alamat_bengkel,
+        pemilik_bengkel: req.body.pemilik_bengkel,
       });
+      res.status(200).json({
+        success: true,
+        message: "Berhasil Membuat Data Penjual",
+        data: penjual,
+      });
+    } catch (error) {
+      next(error);
+    }
   }
 
-  static get(req, res) {
-    PenjualModel.find()
-      .then((penjual) => {
-        res.status(200).send({ message: "success", data: penjual });
-      })
-      .catch((err) => {
-        console.log(err);
+  static async findall(_, res, next) {
+    try {
+      const penjual = await PenjualModel.find();
+      res.status(200).json({
+        success: true,
+        message: "Berhasil Mengambil semua Data Penjual",
+        data: penjual,
       });
-  }
-
-  static create(req, res){
-      const newpenjual = new PenjualModel({
-        serialNumber:req.body.serialNumber,
-        namaPembeli:req.body.namaPembeli,
-        NoPol:req.body.NoPol,
-        MerkMobil:req.body.MerkMobil,
-        NoInvoice:req.body.NoInvoice,
-        Deskripsi:req.body.Deskripsi,
-        image:req.body.image,
-        uploadVideo:req.body.uploadVideo,
-      }) 
-      newpenjual.save()
-      .then((newpenjual)=>{
-          res.status(200).send({message:'success', data:newpenjual})
-      })
-      .catch((err)=>{
-          console.log(err)
-      })
+    } catch (error) {
+      next(error);
+    }
   }
 }
 module.exports = PenjualController;
