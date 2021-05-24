@@ -30,7 +30,7 @@ class QrcodeController{
         }
         qrnew.save()
         .then((qrnew) => {
-            res.send(200).send({message: 'success', data:qrnew})
+            res.send(200).send({message: 'success generate', data:qrnew})
         })
         .catch((err) => {
             error(err)
