@@ -3,12 +3,12 @@ const PembeliModel = require("../model/Pembeli");
 class PembeliController {
     static create(req, res){
         const pembelinew = new PembeliModel({
-            namaBengkel:req.body.namaBengkel, 
-            alamatBengkel:req.body.alamatBengkel, 
-            pemilikBengkel:req.body.pemilikBengkel,
+            nama:req.body.nama, 
+            alamat:req.body.alamat, 
+            pemilik:req.body.pemilik,
         })
-        pembelinew
         console.log(pembelinew)
+        pembelinew
       .save()
       .then((pembelinew) => {
         res.status(200).send({ success: true, data: pembelinew });
@@ -20,14 +20,14 @@ class PembeliController {
 
   static post(req, res) {
     const { 
-        namaBengkel, 
-        alamatBengkel, 
-        pemilikBengkel } = req.body;
+        nama, 
+        alamat, 
+        pemilik } = req.body;
         console.log(req.body);
     const pembeli = new PembeliModel({
-      namaBengkel, 
-      alamatBengkel,
-      pemilikBengkel,
+      nama, 
+      alamat,
+      pemilik
     });
     console.log(pembeli)
     pembeli
