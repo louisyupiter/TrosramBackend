@@ -1,19 +1,21 @@
 const mongoose = require('mongoose');
 
 module.exports = () => {
+  var uristring =
+    process.env.MONGOLAB_URI ||
+    process.env.MONGOHQ_URL ||
+    'mongodb://localhost:27017/demoosram';
+    // "mongodb+srv://Sayangmamah:Sayangmamah@cluster0.ma8no.mongodb.net/demoosram";
 
-    var uristring =
-    process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb+srv://Sayangmamah:Sayangmamah@cluster0.ma8no.mongodb.net/demoosram'
-    ;
-
-
-    mongoose.connect(uristring,{ useNewUrlParser: true, useUnifiedTopology: true }, function (err, res) {
+  mongoose.connect(
+    uristring,
+    { useNewUrlParser: true, useUnifiedTopology: true },
+    function (err, res) {
       if (err) {
-      console.log ('ERROR connecting to: ' + uristring + '. ' + err);
+        console.log("ERROR connecting to: " + uristring + ". " + err);
       } else {
-      console.log ('Succeeded connected  ');
+        console.log("Succeeded connected: " + uristring);
       }
-    });
-
-
+    }
+  );
 };

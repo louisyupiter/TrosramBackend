@@ -20,13 +20,13 @@ const fileStorage = multer.diskStorage({
   },
 });
 
-const upload = multer({storage:fileStorage})
-app.post('/up', upload.single('image'), (req, res)=>{
-  console.log(req.file)
-  res.send('upload success')
-})
+const upload = multer({ storage: fileStorage });
+app.post("/up", upload.single("image"), (req, res) => {
+  console.log(req.file);
+  res.send("upload success");
+});
 
-app.use(multer({storage:fileStorage}), upload.single('image'))
+app.use(multer({ storage: fileStorage }), upload.single("image"));
 
 // app.use(multer({storage:fileStorage, fileFilter:fileFilter}).single('image'));
 // app.use(upload.array());
@@ -54,23 +54,19 @@ app.get("/", (req, res) => {
 
 
 const Crypto = require("cryptr");
-cryptr = new Crypto('123')
-const encstring = cryptr.encrypt('123')
-const decstring = cryptr.decrypt(encstring)
-
+cryptr = new Crypto("123");
+const encstring = cryptr.encrypt("123");
+const decstring = cryptr.decrypt(encstring);
 
 const n = crypto.randomInt(0, 1000000);
-const isi = []
-app.get('/gen', (req, res) =>{
+const isi = [];
+app.get("/gen", (req, res) => {
   let isidata = n;
-  for(let i = isidata; i<100; isidata++){
-    console.log(isidata[i])
+  for (let i = isidata; i < 100; isidata++) {
+    console.log(isidata[i]);
     res.json(isidata[i]);
   }
-})
-
-
-
+});
 
 app.listen(3000, () => {
   console.log("listening on localhost:3000");
