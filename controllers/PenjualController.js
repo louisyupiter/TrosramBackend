@@ -42,5 +42,17 @@ class PenjualController {
       next(error);
     }
   }
+
+  static async findone(req, res, next) {
+    try {
+      const query = { _idQrcode: req.params.idqrcode };
+      const penjual = await PenjualModel.findOne(query);
+      res
+        .status(200)
+        .json({ success: true, message: "success", data: penjual });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 module.exports = PenjualController;

@@ -29,13 +29,11 @@ class PembeliController {
         new: true,
       });
 
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "Berhasil Update Data Pembeli",
-          data: pembeli,
-        });
+      res.status(200).json({
+        success: true,
+        message: "Berhasil Update Data Pembeli",
+        data: pembeli,
+      });
     } catch (error) {
       next(error);
     }
@@ -44,6 +42,18 @@ class PembeliController {
   static async findall(_, res, next) {
     try {
       const pembeli = await PembeliModel.find();
+      res
+        .status(200)
+        .json({ success: true, message: "success", data: pembeli });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async findone(req, res, next) {
+    try {
+      const query = { _idQrcode: req.params.idqrcode };
+      const pembeli = await PembeliModel.findOne(query);
       res
         .status(200)
         .json({ success: true, message: "success", data: pembeli });
