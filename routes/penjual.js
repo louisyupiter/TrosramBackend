@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const PenjualController = require("../controllers/PenjualController");
 
-router.post("/create", PenjualController.create);
+router.post("/:idqrcode", PenjualController.update);
 router.get("/", PenjualController.findall);
 
 module.exports = router;

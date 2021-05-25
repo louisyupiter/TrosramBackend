@@ -1,24 +1,41 @@
 const PembeliModel = require("../model/Pembeli");
 
 class PembeliController {
-  static async create(req, res, next) {
+  static async update(req, res, next) {
     try {
-      // console.log(req.files.image[0].filename);
-      // console.log(req.files.video[0].filename);
       const url = req.protocol + "://" + req.get("host");
-      const pembeli = await PembeliModel.create({
-        nama_pembeli: req.body.nama_pembeli,
-        nomor_polisi: req.body.nomor_polisi,
-        merk_mobil: req.body.merk_mobil,
-        no_invoice: req.body.no_invoice,
-        deskripsi: req.body.deskripsi,
-        image: url + "/image/" + req.files.image[0].filename,
-        video: url + "/video/" + req.files.video[0].filename,
+      const query = { _idQrcode: req.params.idqrcode };
+      const { nama_pembeli, nomor_polisi, merk_mobil, no_invoice, deskripsi } =
+        req.body;
+      const image = url + "/image/" + req.files.image[0].filename;
+      const video = url + "/video/" + req.files.video[0].filename;
+      const updatedData = {
+        nama_pembeli,
+        nomor_polisi,
+        merk_mobil,
+        no_invoice,
+        deskripsi,
+        image,
+        video,
+      };
+
+      for (const key in updatedData) {
+        if (!updatedData[key]) {
+          delete updatedData[key];
+        }
+      }
+
+      const pembeli = await PembeliModel.findOneAndUpdate(query, updatedData, {
+        new: true,
       });
-      
+
       res
         .status(200)
-        .json({ success: true, message: "success", data: pembeli });
+        .json({
+          success: true,
+          message: "Berhasil Update Data Pembeli",
+          data: pembeli,
+        });
     } catch (error) {
       next(error);
     }

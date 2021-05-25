@@ -2,21 +2,20 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const pembeliSchema = new Schema({
-  serial_number: {
+  _idQrcode: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "QrCode",
   },
-  _idPembeli: {
+  _idPenjual: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Penjual",
-
   },
-  nama_pembeli: { type: String, default: "", required: true },
-  nomor_polisi: { type: String, default: "", required: true },
-  merk_mobil: { type: String, default: "", required: true },
-  no_invoice: { type: String, default: "", required: true },
+  nama_pembeli: { type: String, default: "" },
+  nomor_polisi: { type: String, default: "" },
+  merk_mobil: { type: String, default: "" },
+  no_invoice: { type: String, default: "" },
   deskripsi: { type: String, default: "" },
-  image: { type: String, default: "", required: true },
+  image: { type: String, default: "" },
   video: { type: String, default: "" },
 });
 

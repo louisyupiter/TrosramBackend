@@ -1,11 +1,19 @@
 const QrcodeModel = require("../model/QrCode");
-// const cryptoRandomString = require("crypto-random-string");
+const PenjualModel = require("../model/Penjual");
+const PembeliModel = require("../model/Pembeli");
 
 class QrcodeController {
   static async create(req, res, next) {
     try {
       const test = QrcodeController.makeid(8);
       const qrcode = await QrcodeModel.create({ serial_number: `OSY${test}` });
+      const penjual = await PenjualModel.create({
+        _idQrcode: qrcode._id,
+      });
+      await PembeliModel.create({
+        _idQrcode: qrcode._id,
+        _idPenjual: penjual._id
+      });
       res.status(200).json({ success: true, message: "success", data: qrcode });
     } catch (error) {
       next(error);
