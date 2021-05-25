@@ -4,8 +4,7 @@ module.exports = () => {
   var uristring =
     process.env.MONGOLAB_URI ||
     process.env.MONGOHQ_URL ||
-    // 'mongodb://localhost:27017/demoosram';
-    "mongodb+srv://Sayangmamah:Sayangmamah@cluster0.ma8no.mongodb.net/demoosram";
+    'mongodb://localhost:27017/demoosram';
 
   mongoose.connect(
     uristring,
