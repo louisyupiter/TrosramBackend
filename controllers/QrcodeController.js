@@ -3,10 +3,10 @@ const PenjualModel = require("../model/Penjual");
 const PembeliModel = require("../model/Pembeli");
 
 class QrcodeController {
-  static async create(req, res, next) {
+  static async create(_, res, next) {
     try {
-      const test = QrcodeController.makeid(8);
-      const qrcode = await QrcodeModel.create({ serial_number: `OSY${test}` });
+      const snid = QrcodeController.makeid(8);
+      const qrcode = await QrcodeModel.create({ serial_number: `OSY${snid}` });
       const penjual = await PenjualModel.create({
         _idQrcode: qrcode._id,
       });
@@ -17,6 +17,25 @@ class QrcodeController {
       res.status(200).json({ success: true, message: "success", data: qrcode });
     } catch (error) {
       next(error);
+    }
+  }
+
+  static async printSerialNumber(_, res, next) {
+    try {
+      const isPrint = await QrcodeModel.find({
+        isprint: false
+      });
+      if (isPrint.length !== 0) {
+        res.status(200).json({
+          success: true,
+          message: "Serial Number Tersedia",
+          data: isPrint,
+        });
+      } else {
+        throw { name: `NOT_AVAILABLE` };
+      }
+    } catch (err) {
+      next(err);
     }
   }
 
