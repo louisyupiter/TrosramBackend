@@ -12,7 +12,7 @@ class QrcodeController {
       });
       await PembeliModel.create({
         _idQrcode: qrcode._id,
-        _idPenjual: penjual._id
+        _idPenjual: penjual._id,
       });
       res.status(200).json({ success: true, message: "success", data: qrcode });
     } catch (error) {
@@ -22,9 +22,8 @@ class QrcodeController {
 
   static async printSerialNumber(_, res, next) {
     try {
-      const isPrint = await QrcodeModel.find({
-        isprint: false
-      });
+      const isPrint = await QrcodeModel.find({ isprint: false });
+      await QrcodeModel.updateMany({ isprint: false },{ isprint: true });
       if (isPrint.length !== 0) {
         res.status(200).json({
           success: true,
