@@ -20,6 +20,23 @@ class QrcodeController {
     }
   }
 
+  static async getAllUnprinted(_, res, next) {
+    try {
+      const isPrint = await QrcodeModel.find({ isprint: false });
+      if (isPrint.length !== 0) {
+        res.status(200).json({
+          success: true,
+          message: "Serial Number Tersedia",
+          data: isPrint,
+        });
+      } else {
+        throw { name: `NOT_AVAILABLE` };
+      }
+    } catch (err) {
+      next(err);
+    }
+  }
+
   static async printSerialNumber(_, res, next) {
     try {
       const isPrint = await QrcodeModel.find({ isprint: false });
