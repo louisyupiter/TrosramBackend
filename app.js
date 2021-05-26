@@ -26,6 +26,12 @@ app.use((req, res, next) => {
   next();
 });
 
+//firebase-admin
+admin.initializeApp({
+  credential: admin.credential.applicationDefault(),
+  databaseURL: 'https://<DATABASE_NAME>.firebaseio.com'
+});
+
 app.get("/", (req, res) => {
   res.send("API OSRAM version 0.1");
 });
