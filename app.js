@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const mongooseConnect = require("./config/db");
-
+const admin = require('firebase-admin')
 const router = require("./routes");
 
 const app = express();
