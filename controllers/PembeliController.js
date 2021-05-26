@@ -53,7 +53,7 @@ class PembeliController {
   static async findone(req, res, next) {
     try {
       const query = { _idQrcode: req.params.idqrcode };
-      const pembeli = await PembeliModel.findOne(query);
+      const pembeli = await PembeliModel.findOne(query).populate("_idQrcode");
       res
         .status(200)
         .json({ success: true, message: "success", data: pembeli });

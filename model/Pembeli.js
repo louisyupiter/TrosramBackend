@@ -5,7 +5,7 @@ const pembeliSchema = new Schema(
   {
     _idQrcode: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "QrCode",
+      ref: "qrcode",
     },
     _idPenjual: {
       type: mongoose.Schema.Types.ObjectId,
