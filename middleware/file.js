@@ -1,11 +1,15 @@
 const path = require("path"); // for getting file extension
 const multer = require("multer"); // for uploading files
+const {Storage} = require('@google-cloud/storage');
 
 const MIME_TYPE_MAP = {
   "image/png": "png",
   "image/jpeg": "jpg",
   "image/jpg": "jpg",
 };
+const storagefirebase = new Storage({
+  keyFilename:'AAAA3zx1OXE:APA91bFqUbbjeOtnlKbvghHMKSTewY3_7h2psOoc1ud3R382VVU1207gANb13izr_AtAQMJDVC2HA8eUrtFSxQdaHyU7gzuEknPhAU75HgFAs_bkuj2UNNPLKdCuSILflzHdxfVaHEe-'  ,
+});
 
 const makeid = () => {
   const result = [];
@@ -18,6 +22,17 @@ const makeid = () => {
   }
   return result.join("");
 };
+
+//gs://osram-d236c.appspot.com
+//service firebase.storage {
+//   match /b/{bucket}/o {
+//     match /{allPaths=**} {
+//       allow read, write: if request.auth != null;
+//     }
+//   }
+// }
+
+let bucketName = 'gs://osram-d236c.appspot.com';
 
 const storage = multer.diskStorage({
   destination: (_, file, cb) => {
