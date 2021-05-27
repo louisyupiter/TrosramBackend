@@ -40,7 +40,7 @@ const storage = multer.diskStorage({
     if (file.fieldname === "video") {
       cb(null, __basedir +  "/uploads/video");
     } else {
-      cb(null, __basedir + "./uploads/image");
+      cb(null, __basedir + "/uploads/image");
     }
   },
   filename: (req, file, cb) => {
