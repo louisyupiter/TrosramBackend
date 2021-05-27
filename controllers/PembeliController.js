@@ -3,16 +3,15 @@ const PembeliModel = require("../model/Pembeli");
 class PembeliController {
   static async update(req, res, next) {
     try {
-      const url = req.protocol + "://" + req.get("host");
       const query = { _idQrcode: req.params.idqrcode };
       const { nama_pembeli, nomor_polisi, merk_mobil, no_invoice, deskripsi } =
         req.body;
-      console.log(req.body);
+      const url = req.protocol + "://" + req.get("host");
       const image = url + "/image/" + req.files.image[0].filename;
-      console.log(req);
-      console.log(req.files.image[0]);
+      console.log(image);
+      console.log(req.files);
       const video = url + "/video/" + req.files.video[0].filename;
-      console.log(video);
+      // console.log(video);
       const updatedData = {
         nama_pembeli,
         nomor_polisi,
