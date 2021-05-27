@@ -7,10 +7,12 @@ class PembeliController {
       const { nama_pembeli, nomor_polisi, merk_mobil, no_invoice, deskripsi } =
         req.body;
       const url = req.protocol + "://" + req.get("host");
-      const image = url + "/image/" + req.files.image[0].filename;
+      // console.log(req);
+      // console.log(req.file.filename);
+      const image = url + "/image/" + req.file.filename;
       console.log(image);
-      console.log(req.files);
-      const video = url + "/video/" + req.files.video[0].filename;
+      // console.log(req.files);
+      // const video = url + "/video/" + req.file.filename;
       // console.log(video);
       const updatedData = {
         nama_pembeli,
@@ -19,7 +21,7 @@ class PembeliController {
         no_invoice,
         deskripsi,
         image,
-        video,
+        // video,
       };
 
       console.log(updatedData);

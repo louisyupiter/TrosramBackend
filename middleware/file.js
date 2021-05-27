@@ -7,9 +7,9 @@ const MIME_TYPE_MAP = {
   "image/jpeg": "jpg",
   "image/jpg": "jpg",
 };
-const storagefirebase = new Storage({
-  keyFilename:'AAAA3zx1OXE:APA91bFqUbbjeOtnlKbvghHMKSTewY3_7h2psOoc1ud3R382VVU1207gANb13izr_AtAQMJDVC2HA8eUrtFSxQdaHyU7gzuEknPhAU75HgFAs_bkuj2UNNPLKdCuSILflzHdxfVaHEe-'  ,
-});
+// const storagefirebase = new Storage({
+//   keyFilename:'AAAA3zx1OXE:APA91bFqUbbjeOtnlKbvghHMKSTewY3_7h2psOoc1ud3R382VVU1207gANb13izr_AtAQMJDVC2HA8eUrtFSxQdaHyU7gzuEknPhAU75HgFAs_bkuj2UNNPLKdCuSILflzHdxfVaHEe-'  ,
+// });
 
 const makeid = () => {
   const result = [];
@@ -35,22 +35,20 @@ const makeid = () => {
 // let bucketName = 'gs://osram-d236c.appspot.com';
 
 const storage = multer.diskStorage({
-  destination: (_, file, cb) => {
-    // setting destination of uploading files
-    if (file.fieldname === "video") {
-      cb(null, __basedir +  "/uploads/video/");
-    } else {
-      cb(null, __basedir + "/uploads/image/");
+  destination: (req, file, cb) => {
+    const isValid = MIME_TYPE_MAP[file.mimetype];
+    let error = new Error("Invalid mime type");
+    if (isValid) {
+      error = null;
     }
+    cb(error, __basedir +"/uploads/image/");
   },
   filename: (req, file, cb) => {
-    // const name = file.originalname.toLowerCase().split(" ").join("-");
-    // console.log(req.files);
+    const name = file.originalname.toLowerCase().split(" ").join("-");
     // const ext = MIME_TYPE_MAP[file.mimetype];
     // cb(null, name + "-" + Date.now() + "." + ext);
     // cb(null, name + "." + ext);
-    // cb(null, name);
-    cb(null, makeid() + path.extname(file.originalname));
+    cb(null, makeid() + name);
   },
 });
 
@@ -89,14 +87,4 @@ const fileFilter = (req, file, cb) => {
 module.exports = multer({
   storage: storage,
   limits: { fileSize: 5000000 },
-  fileFilter: fileFilter,
-}).fields([
-  {
-    name: "image",
-    maxCount: 1,
-  },
-  {
-    name: "video",
-    maxCount: 1,
-  },
-]);
+}).single("image");
