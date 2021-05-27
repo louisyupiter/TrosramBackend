@@ -1,24 +1,26 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const pembeliSchema = new Schema({
-  serial_number: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "QrCode",
+const pembeliSchema = new Schema(
+  {
+    _idQrcode: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "qrcode",
+    },
+    _idPenjual: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Penjual",
+    },
+    nama_pembeli: { type: String, default: "" },
+    nomor_polisi: { type: String, default: "" },
+    merk_mobil: { type: String, default: "" },
+    no_invoice: { type: String, default: "" },
+    deskripsi: { type: String, default: "" },
+    image: { type: String, default: "" },
+    video: { type: String, default: "" },
   },
-  _idPembeli: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Penjual",
-
-  },
-  nama_pembeli: { type: String, default: "", required: true },
-  nomor_polisi: { type: String, default: "", required: true },
-  merk_mobil: { type: String, default: "", required: true },
-  no_invoice: { type: String, default: "", required: true },
-  deskripsi: { type: String, default: "" },
-  image: { type: String, default: "", required: true },
-  video: { type: String, default: "" },
-});
+  { timestamps: { createdAt: "created_at" } }
+);
 
 const Pembeli = mongoose.model("Pembeli", pembeliSchema);
 module.exports = Pembeli;

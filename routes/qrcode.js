@@ -1,7 +1,9 @@
 const router = require('express').Router();
-const qrcode = require('../controllers/QrcodeController')
+const QrcodeController = require('../controllers/QrcodeController')
 
-router.post('/create', qrcode.create);
-router.post('/validate', qrcode.validate);
+router.post('/create', QrcodeController.create);
+router.post('/validate', QrcodeController.validate);
+router.get('/', QrcodeController.getAllUnprinted);
+router.get('/print', QrcodeController.printSerialNumber);
 
 module.exports = router;

@@ -1,16 +1,28 @@
 const PenjualModel = require("../model/Penjual");
 
 class PenjualController {
-  static async create(req, res, next) {
+  static async update(req, res, next) {
     try {
-      const penjual = await PenjualModel.create({
-        nama_bengkel: req.body.nama_bengkel,
-        alamat_bengkel: req.body.alamat_bengkel,
-        pemilik_bengkel: req.body.pemilik_bengkel,
+      const query = { serial_number: req.params.idqrcode };
+      const { nama_bengkel, alamat_bengkel, pemilik_bengkel } = req.body;
+      const updatedData = {
+        nama_bengkel,
+        alamat_bengkel,
+        pemilik_bengkel,
+      };
+
+      for (const key in updatedData) {
+        if (!updatedData[key]) {
+          delete updatedData[key];
+        }
+      }
+
+      const penjual = await PenjualModel.findOneAndUpdate(query, updatedData, {
+        new: true,
       });
       res.status(200).json({
         success: true,
-        message: "Berhasil Membuat Data Penjual",
+        message: "Berhasil Update Data Penjual",
         data: penjual,
       });
     } catch (error) {
@@ -26,6 +38,19 @@ class PenjualController {
         message: "Berhasil Mengambil semua Data Penjual",
         data: penjual,
       });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async findone(req, res, next) {
+    try {
+      const query = { serial_number: req.params.idqrcode };
+      const penjual = await PenjualModel.findOne(query);
+      console.log(penjual);
+      res
+        .status(200)
+        .json({ success: true, message: "success", data: penjual });
     } catch (error) {
       next(error);
     }

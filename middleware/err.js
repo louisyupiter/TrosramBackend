@@ -28,9 +28,9 @@ const errorHandler = (err, req, res, next) => {
       code = 401;
       message = "yours Not enough";
       break;
-    case "NOT_FOUND":
+    case "NOT_AVAILABLE":
       code = 404;
-      message = "Resource not found!";
+      message = "Data is not available!";
       break;
     case "FORBIDDEN":
       code = 403;

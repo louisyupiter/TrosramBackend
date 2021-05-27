@@ -2,9 +2,14 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const PenjualSchema = new Schema({
-  nama_bengkel: { type: String, required: true },
-  alamat_bengkel: { type: String, required: true },
-  pemilik_bengkel: { type: String, required: true },
+  _idQrcode: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "QrCode",
+  },
+  serial_number: { type: String, default: "" },
+  nama_bengkel: { type: String, default: "" },
+  alamat_bengkel: { type: String, default: "" },
+  pemilik_bengkel: { type: String, default: "" },
 });
 
 const Penjual = mongoose.model("Penjual", PenjualSchema);
