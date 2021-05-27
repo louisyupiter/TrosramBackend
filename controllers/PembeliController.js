@@ -4,13 +4,11 @@ class PembeliController {
   static async update(req, res, next) {
     try {
       const url = req.protocol + "://" + req.get("host");
-      console.log(url);
       const query = { _idQrcode: req.params.idqrcode };
-      console.log(query);
       const { nama_pembeli, nomor_polisi, merk_mobil, no_invoice, deskripsi } =
         req.body;
       const image = url + "/image/" + req.files.image[0].filename;
-      console.log(image);
+      console.log(req.files.image[0]);
       const video = url + "/video/" + req.files.video[0].filename;
       console.log(video);
       const updatedData = {
