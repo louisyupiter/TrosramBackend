@@ -8,6 +8,7 @@ class PembeliController {
       const { nama_pembeli, nomor_polisi, merk_mobil, no_invoice, deskripsi } =
         req.body;
       const image = url + "/image/" + req.files.image[0].filename;
+      console.log(req);
       console.log(req.files.image[0]);
       const video = url + "/video/" + req.files.video[0].filename;
       console.log(video);
