@@ -1,6 +1,6 @@
 const path = require("path"); // for getting file extension
 const multer = require("multer"); // for uploading files
-const {Storage} = require('@google-cloud/storage');
+// const { Storage } = require("@google-cloud/storage");
 
 const MIME_TYPE_MAP = {
   "image/png": "png",
@@ -41,7 +41,7 @@ const storage = multer.diskStorage({
     if (isValid) {
       error = null;
     }
-    cb(error, __basedir +"/uploads/image/");
+    cb(error, __basedir + "/uploads/image/");
   },
   filename: (req, file, cb) => {
     const name = file.originalname.toLowerCase().split(" ").join("-");
@@ -84,7 +84,14 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-module.exports = multer({
+const images = multer({
   storage: storage,
   limits: { fileSize: 5000000 },
 }).single("image");
+
+const videos = multer({
+  storage: storage,
+  limits: { fileSize: 5000000 },
+}).single("image");
+
+module.exports = { images, videos };

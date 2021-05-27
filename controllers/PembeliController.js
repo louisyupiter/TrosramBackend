@@ -6,25 +6,17 @@ class PembeliController {
       const query = { _idQrcode: req.params.idqrcode };
       const { nama_pembeli, nomor_polisi, merk_mobil, no_invoice, deskripsi } =
         req.body;
-      const url = req.protocol + "://" + req.get("host");
-      // console.log(req);
-      // console.log(req.file.filename);
-      const image = url + "/image/" + req.file.filename;
-      console.log(image);
-      // console.log(req.files);
-      // const video = url + "/video/" + req.file.filename;
-      // console.log(video);
+        // console.log(req);
+        console.log(req.body);
       const updatedData = {
         nama_pembeli,
         nomor_polisi,
         merk_mobil,
         no_invoice,
         deskripsi,
-        image,
-        // video,
       };
+      // console.log(updatedData);
 
-      console.log(updatedData);
       for (const key in updatedData) {
         if (!updatedData[key]) {
           delete updatedData[key];
@@ -41,6 +33,50 @@ class PembeliController {
         message: "Berhasil Update Data Pembeli",
         data: pembeli,
       });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async updateimage(req, res, next) {
+    try {
+      const query = { _idQrcode: req.params.idqrcode };
+      const url = req.protocol + "://" + req.get("host");
+      const images = url + "uploads/image/" + req.file.filename;
+
+      const pembeli = await PembeliModel.findOneAndUpdate(
+        query,
+        { image: images },
+        {
+          new: true,
+        }
+      );
+      console.log(pembeli);
+      res
+        .status(200)
+        .json({ success: true, message: "success", data: pembeli });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async updatevideo(req, res, next) {
+    try {
+      const query = { _idQrcode: req.params.idqrcode };
+      const url = req.protocol + "://" + req.get("host");
+      const videos = url + "uploads/video/" + req.file.filename;
+
+      const pembeli = await PembeliModel.findOneAndUpdate(
+        query,
+        { video: videos },
+        {
+          new: true,
+        }
+      );
+      console.log(pembeli);
+      res
+        .status(200)
+        .json({ success: true, message: "success", data: pembeli });
     } catch (error) {
       next(error);
     }
