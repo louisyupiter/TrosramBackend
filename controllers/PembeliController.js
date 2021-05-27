@@ -42,7 +42,7 @@ class PembeliController {
     try {
       const query = { _idQrcode: req.params.idqrcode };
       const url = req.protocol + "://" + req.get("host");
-      const images = url + "uploads/image/" + req.file.filename;
+      const images = url + "/uploads/image/" + req.file.filename;
 
       const pembeli = await PembeliModel.findOneAndUpdate(
         query,
@@ -51,7 +51,6 @@ class PembeliController {
           new: true,
         }
       );
-      console.log(pembeli);
       res
         .status(200)
         .json({ success: true, message: "success", data: pembeli });
@@ -64,7 +63,7 @@ class PembeliController {
     try {
       const query = { _idQrcode: req.params.idqrcode };
       const url = req.protocol + "://" + req.get("host");
-      const videos = url + "uploads/video/" + req.file.filename;
+      const videos = url + "/uploads/video/" + req.file.filename;
 
       const pembeli = await PembeliModel.findOneAndUpdate(
         query,

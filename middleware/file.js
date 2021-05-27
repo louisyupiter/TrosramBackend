@@ -7,6 +7,11 @@ const MIME_TYPE_MAP = {
   "image/jpeg": "jpg",
   "image/jpg": "jpg",
 };
+
+const MIME_TYPE_MAP_VIDEO = {
+  "video/mp4": "mp4",
+  "video/3gpp": "3gp",
+};
 // const storagefirebase = new Storage({
 //   keyFilename:'AAAA3zx1OXE:APA91bFqUbbjeOtnlKbvghHMKSTewY3_7h2psOoc1ud3R382VVU1207gANb13izr_AtAQMJDVC2HA8eUrtFSxQdaHyU7gzuEknPhAU75HgFAs_bkuj2UNNPLKdCuSILflzHdxfVaHEe-'  ,
 // });
@@ -42,6 +47,24 @@ const storage = multer.diskStorage({
       error = null;
     }
     cb(error, __basedir + "/uploads/image/");
+  },
+  filename: (req, file, cb) => {
+    const name = file.originalname.toLowerCase().split(" ").join("-");
+    // const ext = MIME_TYPE_MAP[file.mimetype];
+    // cb(null, name + "-" + Date.now() + "." + ext);
+    // cb(null, name + "." + ext);
+    cb(null, makeid() + name);
+  },
+});
+
+const storagevideo = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const isValid = MIME_TYPE_MAP_VIDEO[file.mimetype];
+    let error = new Error("Invalid mime type");
+    if (isValid) {
+      error = null;
+    }
+    cb(error, __basedir + "/uploads/video/");
   },
   filename: (req, file, cb) => {
     const name = file.originalname.toLowerCase().split(" ").join("-");
@@ -90,8 +113,8 @@ const images = multer({
 }).single("image");
 
 const videos = multer({
-  storage: storage,
-  limits: { fileSize: 5000000 },
-}).single("image");
+  storage: storagevideo,
+  limits: { fileSize: 10000000 },
+}).single("video");
 
 module.exports = { images, videos };
