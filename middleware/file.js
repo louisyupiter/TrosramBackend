@@ -38,9 +38,9 @@ const storage = multer.diskStorage({
   destination: (_, file, cb) => {
     // setting destination of uploading files
     if (file.fieldname === "video") {
-      cb(null, "./uploads/video");
+      cb(null, __basedir +  "/uploads/video");
     } else {
-      cb(null, "./uploads/image");
+      cb(null, __basedir + "./uploads/image");
     }
   },
   filename: (req, file, cb) => {

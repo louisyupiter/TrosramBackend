@@ -3,6 +3,7 @@ const cors = require("cors");
 const mongooseConnect = require("./config/db");
 const admin = require('firebase-admin')
 const router = require("./routes");
+global.__basedir = __dirname
 
 const app = express();
 
