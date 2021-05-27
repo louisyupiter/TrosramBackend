@@ -1,3 +1,5 @@
+const firebase = require('firebase-admin');
+
 var firebaseConfig = {
   apiKey: "AIzaSyAxsp5kpEpnK8IlZaronZNxgPf25oVXNzY",
   authDomain: "osram-d236c.firebaseapp.com",
@@ -8,3 +10,7 @@ var firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
+
+const bucket = firebase.storage().bucket();
+
+module.exports = bucket;
