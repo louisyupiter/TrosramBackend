@@ -9,6 +9,7 @@ class QrcodeController {
       const qrcode = await QrcodeModel.create({ serial_number: `OSY${snid}` });
       const penjual = await PenjualModel.create({
         _idQrcode: qrcode._id,
+        serial_number: qrcode.serial_number
       });
       await PembeliModel.create({
         _idQrcode: qrcode._id,

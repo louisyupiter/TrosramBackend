@@ -3,7 +3,7 @@ const PenjualModel = require("../model/Penjual");
 class PenjualController {
   static async update(req, res, next) {
     try {
-      const query = { _idQrcode: req.params.idqrcode };
+      const query = { serial_number: req.params.idqrcode };
       const { nama_bengkel, alamat_bengkel, pemilik_bengkel } = req.body;
       const updatedData = {
         nama_bengkel,
@@ -45,8 +45,9 @@ class PenjualController {
 
   static async findone(req, res, next) {
     try {
-      const query = { _idQrcode: req.params.idqrcode };
+      const query = { serial_number: req.params.idqrcode };
       const penjual = await PenjualModel.findOne(query);
+      console.log(penjual);
       res
         .status(200)
         .json({ success: true, message: "success", data: penjual });

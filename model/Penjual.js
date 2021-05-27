@@ -6,6 +6,7 @@ const PenjualSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "QrCode",
   },
+  serial_number: { type: String, default: "" },
   nama_bengkel: { type: String, default: "" },
   alamat_bengkel: { type: String, default: "" },
   pemilik_bengkel: { type: String, default: "" },
