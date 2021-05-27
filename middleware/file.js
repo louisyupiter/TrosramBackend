@@ -32,15 +32,15 @@ const makeid = () => {
 //   }
 // }
 
-let bucketName = 'gs://osram-d236c.appspot.com';
+// let bucketName = 'gs://osram-d236c.appspot.com';
 
 const storage = multer.diskStorage({
   destination: (_, file, cb) => {
     // setting destination of uploading files
     if (file.fieldname === "video") {
-      cb(null, __basedir +  "/uploads/video");
+      cb(null, __basedir +  "/uploads/video/");
     } else {
-      cb(null, __basedir + "/uploads/image");
+      cb(null, __basedir + "/uploads/image/");
     }
   },
   filename: (req, file, cb) => {
@@ -53,6 +53,8 @@ const storage = multer.diskStorage({
     cb(null, makeid() + path.extname(file.originalname));
   },
 });
+
+// console.log(__basedir);
 
 const fileFilter = (req, file, cb) => {
   if (file.fieldname === "video") {
