@@ -108,12 +108,12 @@ const fileFilter = (req, file, cb) => {
 };
 
 const images = multer({
-  storage: storage,
+  storage: multer.memoryStorage(),
   limits: { fileSize: 5000000 },
 }).single("image");
 
 const videos = multer({
-  storage: storagevideo,
+  storage: multer.memoryStorage(),
   limits: { fileSize: 10000000 },
 }).single("video");
 

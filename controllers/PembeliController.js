@@ -1,4 +1,5 @@
 const PembeliModel = require("../model/Pembeli");
+const uploadImage = require("../helpers/helpers");
 
 class PembeliController {
   static async update(req, res, next) {
@@ -6,8 +7,8 @@ class PembeliController {
       const query = { _idQrcode: req.params.idqrcode };
       const { nama_pembeli, nomor_polisi, merk_mobil, no_invoice, deskripsi } =
         req.body;
-        // console.log(req);
-        console.log(req.body);
+      // console.log(req);
+      // console.log(req.body);
       const updatedData = {
         nama_pembeli,
         nomor_polisi,
@@ -26,7 +27,7 @@ class PembeliController {
       const pembeli = await PembeliModel.findOneAndUpdate(query, updatedData, {
         new: true,
       });
-      console.log(pembeli);
+      // console.log(pembeli);
 
       res.status(200).json({
         success: true,
@@ -38,15 +39,16 @@ class PembeliController {
     }
   }
 
+  
+
   static async updateimage(req, res, next) {
     try {
       const query = { _idQrcode: req.params.idqrcode };
-      const url = req.protocol + "://" + req.get("host");
-      const images = url + "/uploads/image/" + req.file.filename;
-
+      const myFile = req.file;
+      const imageUrl = await uploadImage(myFile);
       const pembeli = await PembeliModel.findOneAndUpdate(
         query,
-        { image: images },
+        { image: imageUrl },
         {
           new: true,
         }
@@ -62,17 +64,15 @@ class PembeliController {
   static async updatevideo(req, res, next) {
     try {
       const query = { _idQrcode: req.params.idqrcode };
-      const url = req.protocol + "://" + req.get("host");
-      const videos = url + "/uploads/video/" + req.file.filename;
-
+      const myFile = req.file;
+      const videoUrl = await uploadImage(myFile);
       const pembeli = await PembeliModel.findOneAndUpdate(
         query,
-        { video: videos },
+        { video: videoUrl },
         {
           new: true,
         }
       );
-      console.log(pembeli);
       res
         .status(200)
         .json({ success: true, message: "success", data: pembeli });
@@ -83,7 +83,7 @@ class PembeliController {
 
   static async findall(_, res, next) {
     try {
-      const pembeli = await PembeliModel.find();
+      const pembeli = await PembeliModel.find().populate("_idQrcode").populate("_idPenjual");
       res
         .status(200)
         .json({ success: true, message: "success", data: pembeli });
@@ -98,7 +98,6 @@ class PembeliController {
       // console.log(query);
 
       const pembeli = await PembeliModel.findOne(query).populate("_idQrcode");
-      // console.log(pembeli);
       res
         .status(200)
         .json({ success: true, message: "success", data: pembeli });
