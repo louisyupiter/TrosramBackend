@@ -7,6 +7,6 @@ const storage = new Storage({
   projectId: 'peak-emitter-188810',
 })
 
-// storage.getBuckets().then(x => console.log(x));
+storage.getBuckets().then(x => console.log(x));
 
 module.exports = storage
