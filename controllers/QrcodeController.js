@@ -5,8 +5,8 @@ const PembeliModel = require("../model/Pembeli");
 class QrcodeController {
   static async create(_, res, next) {
     try {
-      const snid = QrcodeController.makeid(8);
-      const qrcode = await QrcodeModel.create({ serial_number: `OSY${snid}` });
+      const snid = QrcodeController.makeid(11);
+      const qrcode = await QrcodeModel.create({ serial_number: `${snid}` });
       const penjual = await PenjualModel.create({
         _idQrcode: qrcode._id,
         serial_number: qrcode.serial_number
