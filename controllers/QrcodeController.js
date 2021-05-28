@@ -59,7 +59,7 @@ class QrcodeController {
   static async validate(req, res, next) {
     try {
       const numberValidated = await QrcodeModel.findOne({
-        serial_number: req.body.serial_number,
+        serial_number: req.body.serial_number.toUpperCase()
       });
       if (numberValidated) {
         res.status(200).json({
@@ -77,7 +77,7 @@ class QrcodeController {
 
   static makeid(length) {
     const result = [];
-    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const characters = "ABCDEFGHIJKLMNPQRSTUVWXYZ123456789";
     const charactersLength = characters.length;
     for (let i = 0; i < length; i++) {
       result.push(
