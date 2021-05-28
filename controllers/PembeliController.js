@@ -39,8 +39,6 @@ class PembeliController {
     }
   }
 
-  
-
   static async updateimage(req, res, next) {
     try {
       const query = { _idQrcode: req.params.idqrcode };
@@ -83,7 +81,9 @@ class PembeliController {
 
   static async findall(_, res, next) {
     try {
-      const pembeli = await PembeliModel.find().populate("_idQrcode").populate("_idPenjual");
+      const pembeli = await PembeliModel.find()
+        .populate("_idQrcode")
+        .populate("_idPenjual");
       res
         .status(200)
         .json({ success: true, message: "success", data: pembeli });
@@ -95,12 +95,14 @@ class PembeliController {
   static async findone(req, res, next) {
     try {
       const query = { _idQrcode: req.params.idqrcode };
-      // console.log(query);
-
       const pembeli = await PembeliModel.findOne(query).populate("_idQrcode");
-      res
-        .status(200)
-        .json({ success: true, message: "success", data: pembeli });
+      if (pembeli) {
+        res
+          .status(200)
+          .json({ success: true, message: "Pembeli tersedia", data: pembeli });
+      } else {
+        throw { name: `NOT_AVAILABLE` };
+      }
     } catch (error) {
       next(error);
     }
