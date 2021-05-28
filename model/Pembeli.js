@@ -19,7 +19,7 @@ const pembeliSchema = new Schema(
     image: { type: String, default: "" },
     video: { type: String, default: "" },
   },
-  { timestamps: { createdAt: "created_at" }, versionKey: false }
+  { timestamps: { createdAt: "created_at", updatedAt: 'tanggal_pengisian' }, versionKey: false }
 );
 
 pembeliSchema.set("toJSON", {
@@ -28,6 +28,7 @@ pembeliSchema.set("toJSON", {
     delete ret._id;
     delete ret.id;
     delete ret.__v;
+    delete ret.created_at;
     return ret;
   },
 });
