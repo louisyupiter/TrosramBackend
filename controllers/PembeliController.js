@@ -1,23 +1,22 @@
 const PembeliModel = require("../model/Pembeli");
+const uploadImage = require("../helpers/helpers");
 
 class PembeliController {
   static async update(req, res, next) {
     try {
-      const url = req.protocol + "://" + req.get("host");
       const query = { _idQrcode: req.params.idqrcode };
       const { nama_pembeli, nomor_polisi, merk_mobil, no_invoice, deskripsi } =
         req.body;
-      const image = url + "/image/" + req.files.image[0].filename;
-      const video = url + "/video/" + req.files.video[0].filename;
+      // console.log(req);
+      // console.log(req.body);
       const updatedData = {
         nama_pembeli,
         nomor_polisi,
         merk_mobil,
         no_invoice,
         deskripsi,
-        image,
-        video,
       };
+      // console.log(updatedData);
 
       for (const key in updatedData) {
         if (!updatedData[key]) {
@@ -28,6 +27,7 @@ class PembeliController {
       const pembeli = await PembeliModel.findOneAndUpdate(query, updatedData, {
         new: true,
       });
+      // console.log(pembeli);
 
       res.status(200).json({
         success: true,
@@ -39,9 +39,51 @@ class PembeliController {
     }
   }
 
+  static async updateimage(req, res, next) {
+    try {
+      const query = { _idQrcode: req.params.idqrcode };
+      const myFile = req.file;
+      const imageUrl = await uploadImage(myFile);
+      const pembeli = await PembeliModel.findOneAndUpdate(
+        query,
+        { image: imageUrl },
+        {
+          new: true,
+        }
+      );
+      res
+        .status(200)
+        .json({ success: true, message: "success", data: pembeli });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async updatevideo(req, res, next) {
+    try {
+      const query = { _idQrcode: req.params.idqrcode };
+      const myFile = req.file;
+      const videoUrl = await uploadImage(myFile);
+      const pembeli = await PembeliModel.findOneAndUpdate(
+        query,
+        { video: videoUrl },
+        {
+          new: true,
+        }
+      );
+      res
+        .status(200)
+        .json({ success: true, message: "success", data: pembeli });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   static async findall(_, res, next) {
     try {
-      const pembeli = await PembeliModel.find();
+      const pembeli = await PembeliModel.find()
+        .populate("_idQrcode")
+        .populate("_idPenjual");
       res
         .status(200)
         .json({ success: true, message: "success", data: pembeli });
@@ -53,13 +95,14 @@ class PembeliController {
   static async findone(req, res, next) {
     try {
       const query = { _idQrcode: req.params.idqrcode };
-      console.log(query);
-
       const pembeli = await PembeliModel.findOne(query).populate("_idQrcode");
-      console.log(pembeli);
-      res
-        .status(200)
-        .json({ success: true, message: "success", data: pembeli });
+      if (pembeli) {
+        res
+          .status(200)
+          .json({ success: true, message: "Pembeli tersedia", data: pembeli });
+      } else {
+        throw { name: `NOT_AVAILABLE` };
+      }
     } catch (error) {
       next(error);
     }

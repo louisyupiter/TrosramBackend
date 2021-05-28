@@ -1,15 +1,20 @@
 const path = require("path"); // for getting file extension
 const multer = require("multer"); // for uploading files
-const {Storage} = require('@google-cloud/storage');
+// const { Storage } = require("@google-cloud/storage");
 
 const MIME_TYPE_MAP = {
   "image/png": "png",
   "image/jpeg": "jpg",
   "image/jpg": "jpg",
 };
-const storagefirebase = new Storage({
-  keyFilename:'AAAA3zx1OXE:APA91bFqUbbjeOtnlKbvghHMKSTewY3_7h2psOoc1ud3R382VVU1207gANb13izr_AtAQMJDVC2HA8eUrtFSxQdaHyU7gzuEknPhAU75HgFAs_bkuj2UNNPLKdCuSILflzHdxfVaHEe-'  ,
-});
+
+const MIME_TYPE_MAP_VIDEO = {
+  "video/mp4": "mp4",
+  "video/3gpp": "3gp",
+};
+// const storagefirebase = new Storage({
+//   keyFilename:'AAAA3zx1OXE:APA91bFqUbbjeOtnlKbvghHMKSTewY3_7h2psOoc1ud3R382VVU1207gANb13izr_AtAQMJDVC2HA8eUrtFSxQdaHyU7gzuEknPhAU75HgFAs_bkuj2UNNPLKdCuSILflzHdxfVaHEe-'  ,
+// });
 
 const makeid = () => {
   const result = [];
@@ -32,27 +37,45 @@ const makeid = () => {
 //   }
 // }
 
-let bucketName = 'gs://osram-d236c.appspot.com';
+// let bucketName = 'gs://osram-d236c.appspot.com';
 
 const storage = multer.diskStorage({
-  destination: (_, file, cb) => {
-    // setting destination of uploading files
-    if (file.fieldname === "video") {
-      cb(null, __basedir +  "/uploads/video");
-    } else {
-      cb(null, __basedir + "./uploads/image");
+  destination: (req, file, cb) => {
+    const isValid = MIME_TYPE_MAP[file.mimetype];
+    let error = new Error("Invalid mime type");
+    if (isValid) {
+      error = null;
     }
+    cb(error, __basedir + "/uploads/image/");
   },
   filename: (req, file, cb) => {
-    // const name = file.originalname.toLowerCase().split(" ").join("-");
-    // console.log(req.files);
+    const name = file.originalname.toLowerCase().split(" ").join("-");
     // const ext = MIME_TYPE_MAP[file.mimetype];
     // cb(null, name + "-" + Date.now() + "." + ext);
     // cb(null, name + "." + ext);
-    // cb(null, name);
-    cb(null, makeid() + path.extname(file.originalname));
+    cb(null, makeid() + name);
   },
 });
+
+const storagevideo = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const isValid = MIME_TYPE_MAP_VIDEO[file.mimetype];
+    let error = new Error("Invalid mime type");
+    if (isValid) {
+      error = null;
+    }
+    cb(error, __basedir + "/uploads/video/");
+  },
+  filename: (req, file, cb) => {
+    const name = file.originalname.toLowerCase().split(" ").join("-");
+    // const ext = MIME_TYPE_MAP[file.mimetype];
+    // cb(null, name + "-" + Date.now() + "." + ext);
+    // cb(null, name + "." + ext);
+    cb(null, makeid() + name);
+  },
+});
+
+// console.log(__basedir);
 
 const fileFilter = (req, file, cb) => {
   if (file.fieldname === "video") {
@@ -84,17 +107,14 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-module.exports = multer({
-  storage: storage,
+const images = multer({
+  storage: multer.memoryStorage(),
   limits: { fileSize: 5000000 },
-  fileFilter: fileFilter,
-}).fields([
-  {
-    name: "image",
-    maxCount: 1,
-  },
-  {
-    name: "video",
-    maxCount: 1,
-  },
-]);
+}).single("image");
+
+const videos = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 10000000 },
+}).single("video");
+
+module.exports = { images, videos };
