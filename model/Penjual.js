@@ -12,5 +12,15 @@ const PenjualSchema = new Schema({
   pemilik_bengkel: { type: String, default: "" },
 });
 
+PenjualSchema.set("toJSON", {
+  transform: function (doc, ret) {
+    ret.id = ret._id;
+    delete ret._id;
+    delete ret.id;
+    delete ret.__v;
+    return ret;
+  },
+});
+
 const Penjual = mongoose.model("Penjual", PenjualSchema);
 module.exports = Penjual;

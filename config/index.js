@@ -3,7 +3,7 @@ const path = require('path')
 const serviceKey = path.join(__dirname, './keys.json')
 
 const storage = new Storage({
-  keyFilename: process.env.GOOGLE_CREDENTIALS || serviceKey,
+  keyFilename: serviceKey,
   projectId: 'peak-emitter-188810',
 })
 

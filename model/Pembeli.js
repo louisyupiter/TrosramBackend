@@ -19,8 +19,18 @@ const pembeliSchema = new Schema(
     image: { type: String, default: "" },
     video: { type: String, default: "" },
   },
-  { timestamps: { createdAt: "created_at" } }
+  { timestamps: { createdAt: "created_at" }, versionKey: false }
 );
+
+pembeliSchema.set("toJSON", {
+  transform: function (doc, ret) {
+    ret.id = ret._id;
+    delete ret._id;
+    delete ret.id;
+    delete ret.__v;
+    return ret;
+  },
+});
 
 const Pembeli = mongoose.model("Pembeli", pembeliSchema);
 module.exports = Pembeli;

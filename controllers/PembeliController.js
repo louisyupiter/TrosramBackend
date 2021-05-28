@@ -27,7 +27,6 @@ class PembeliController {
       const pembeli = await PembeliModel.findOneAndUpdate(query, updatedData, {
         new: true,
       });
-      // console.log(pembeli);
 
       res.status(200).json({
         success: true,
@@ -82,7 +81,7 @@ class PembeliController {
   static async findall(_, res, next) {
     try {
       const pembeli = await PembeliModel.find()
-        .populate("_idQrcode")
+        .populate("_idQrcode", '-isprint -__v')
         .populate("_idPenjual");
       res
         .status(200)
