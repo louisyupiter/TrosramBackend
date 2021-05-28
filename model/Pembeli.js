@@ -29,6 +29,7 @@ pembeliSchema.set("toJSON", {
     delete ret.id;
     delete ret.__v;
     delete ret.created_at;
+    delete ret._idQrcode;
     return ret;
   },
 });
