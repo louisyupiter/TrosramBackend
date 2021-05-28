@@ -18,7 +18,6 @@ PenjualSchema.set("toJSON", {
     delete ret._id;
     delete ret.id;
     delete ret.__v;
-    delete ret._idQrcode;
     return ret;
   },
 });
