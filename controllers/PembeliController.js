@@ -63,11 +63,13 @@ class PembeliController {
   static async updatevideo(req, res, next) {
     try {
       const query = { _idQrcode: req.params.idqrcode };
-      const myFile = req.file;
+      const myFile = req.files;
+      const tempPush = [];
       const videoUrl = await uploadImage(myFile);
+      tempPush.push(videoUrl);
       const pembeli = await PembeliModel.findOneAndUpdate(
         query,
-        { video: videoUrl },
+        { $push: { video: { $each: tempPush } } },
         {
           new: true,
         }

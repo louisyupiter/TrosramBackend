@@ -100,6 +100,6 @@ const images = multer({
 const videos = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 10000000 },
-}).single("video");
+}).any();
 
 module.exports = { images, videos };
