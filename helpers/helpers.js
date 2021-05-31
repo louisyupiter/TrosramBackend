@@ -1,7 +1,6 @@
-
-const util = require('util')
-const gc = require('../config/index')
-const bucket = gc.bucket('osram') // should be your bucket name
+const util = require("util");
+const gc = require("../config/index");
+const bucket = gc.bucket("osram"); // should be your bucket name
 
 /**
  *
@@ -12,29 +11,34 @@ const bucket = gc.bucket('osram') // should be your bucket name
  *   "originalname" and "buffer" as keys
  */
 
- const uploadImage = (file) => new Promise((resolve, reject) => {
-  const { originalname, buffer, fieldname } = file;
-  let blob = '';
-  if(fieldname === 'image'){
-    blob = bucket.file('uploads/image/'+ Date.now() + originalname.replace(/ /g, "_"))
-  } else {
-    blob = bucket.file('uploads/video/'+ Date.now() + originalname.replace(/ /g, "_"))
-  }
-  console.log(blob);
-  const blobStream = blob.createWriteStream({
-    resumable: false,
-    gzip: true,
-  })
-  blobStream.on('finish', () => {
-    const publicUrl = util.format(
-      `https://storage.googleapis.com/${bucket.name}/${blob.name}`
-    )
-    resolve(publicUrl)
-  })
-  .on('error', () => {
-    reject(`Unable to upload image, something went wrong`)
-  })
-  .end(buffer)
-})
+const uploadImage = (file) =>
+  new Promise((resolve, reject) => {
+    file.forEach((fil) => {
+      console.log(fil);
+      let blob = "";
+      if (fil.fieldname === "image") {
+        blob = bucket.file(
+          "uploads/image/" + Date.now() + fil.originalname.replace(/ /g, "_")
+        );
+      } else {
+        blob = bucket.file(
+          "uploads/video/" + Date.now() + fil.originalname.replace(/ /g, "_")
+        );
+      }
+      const blobStream = blob.createWriteStream();
+
+      blobStream
+        .on("finish", () => {
+          const publicUrl = util.format(
+            `https://storage.googleapis.com/${bucket.name}/${blob.name}`
+          );
+          resolve(publicUrl);
+        })
+        .on("error", () => {
+          reject(`Unable to upload image, something went wrong`);
+        })
+        .end(fil.buffer);
+    });
+  });
 
 module.exports = uploadImage;

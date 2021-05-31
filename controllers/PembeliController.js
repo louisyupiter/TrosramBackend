@@ -41,11 +41,13 @@ class PembeliController {
   static async updateimage(req, res, next) {
     try {
       const query = { _idQrcode: req.params.idqrcode };
-      const myFile = req.file;
+      const myFile = req.files;
+      const tempPush = [];
       const imageUrl = await uploadImage(myFile);
+      tempPush.push(imageUrl);
       const pembeli = await PembeliModel.findOneAndUpdate(
         query,
-        { image: imageUrl },
+        { $push: { image: { $each: tempPush } } },
         {
           new: true,
         }
