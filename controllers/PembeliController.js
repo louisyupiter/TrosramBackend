@@ -1,5 +1,6 @@
 const PembeliModel = require("../model/Pembeli");
 const uploadImage = require("../helpers/helpers");
+const Excel = require("../model/Excel");
 
 class PembeliController {
   static async update(req, res, next) {
@@ -7,6 +8,13 @@ class PembeliController {
       const query = { _idQrcode: req.params.idqrcode };
       const { nama_pembeli, nomor_polisi, merk_mobil, no_invoice, deskripsi } =
         req.body;
+
+      let today = new Date();
+      let dd = String(today.getDate()).padStart(2, "0");
+      let mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+      let yyyy = today.getFullYear();
+
+      today =  dd + "/" + mm + "/" + yyyy;
       // console.log(req);
       // console.log(req.body);
       const updatedData = {
@@ -15,8 +23,8 @@ class PembeliController {
         merk_mobil,
         no_invoice,
         deskripsi,
+        tanggal_input: today,
       };
-      // console.log(updatedData);
 
       for (const key in updatedData) {
         if (!updatedData[key]) {
@@ -27,7 +35,9 @@ class PembeliController {
       const pembeli = await PembeliModel.findOneAndUpdate(query, updatedData, {
         new: true,
       });
-
+      await Excel.findOneAndUpdate(query, updatedData, {
+        new: true,
+      });
       res.status(200).json({
         success: true,
         message: "Berhasil Update Data Pembeli",
@@ -46,6 +56,13 @@ class PembeliController {
       const imageUrl = await uploadImage(myFile);
       tempPush.push(imageUrl);
       const pembeli = await PembeliModel.findOneAndUpdate(
+        query,
+        { $push: { image: { $each: tempPush } } },
+        {
+          new: true,
+        }
+      );
+      await Excel.findOneAndUpdate(
         query,
         { $push: { image: { $each: tempPush } } },
         {
@@ -74,6 +91,13 @@ class PembeliController {
           new: true,
         }
       );
+      await Excel.findOneAndUpdate(
+        query,
+        { $push: { video: { $each: tempPush } } },
+        {
+          new: true,
+        }
+      );
       res
         .status(200)
         .json({ success: true, message: "success", data: pembeli });
@@ -84,9 +108,7 @@ class PembeliController {
 
   static async findall(_, res, next) {
     try {
-      const pembeli = await PembeliModel.find()
-        .populate("_idQrcode", '-isprint -__v')
-        .populate("_idPenjual");
+      const pembeli = await Excel.find({}, "-_idQrcode");
       res
         .status(200)
         .json({ success: true, message: "success", data: pembeli });

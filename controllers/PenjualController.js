@@ -1,3 +1,4 @@
+const Excel = require("../model/Excel");
 const PenjualModel = require("../model/Penjual");
 
 class PenjualController {
@@ -18,6 +19,9 @@ class PenjualController {
       }
 
       const penjual = await PenjualModel.findOneAndUpdate(query, updatedData, {
+        new: true,
+      });
+      await Excel.findOneAndUpdate(query, updatedData, {
         new: true,
       });
       res.status(200).json({

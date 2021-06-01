@@ -1,6 +1,7 @@
 const QrcodeModel = require("../model/QrCode");
 const PenjualModel = require("../model/Penjual");
 const PembeliModel = require("../model/Pembeli");
+const Excel = require("../model/Excel");
 
 class QrcodeController {
   static async create(_, res, next) {
@@ -15,6 +16,10 @@ class QrcodeController {
         _idQrcode: qrcode._id,
         _idPenjual: penjual._id,
       });
+      await Excel.create({
+        _idQrcode: qrcode._id,
+        serial_number: `${snid}`,
+      })
       res.status(200).json({ success: true, message: "success", data: qrcode });
     } catch (error) {
       next(error);
