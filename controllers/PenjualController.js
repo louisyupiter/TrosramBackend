@@ -51,7 +51,6 @@ class PenjualController {
     try {
       const query = { serial_number: req.params.idqrcode };
       const penjual = await PenjualModel.findOne(query);
-      console.log(penjual);
       res
         .status(200)
         .json({ success: true, message: "success", data: penjual });

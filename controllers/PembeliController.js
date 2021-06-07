@@ -1,12 +1,15 @@
 const PembeliModel = require("../model/Pembeli");
-const uploadImage = require("../helpers/helpers");
+const {
+  uploadImageVideoMultiple,
+  uploadImageSingle,
+} = require("../helpers/helpers");
 const Excel = require("../model/Excel");
 
 class PembeliController {
   static async update(req, res, next) {
     try {
       const query = { _idQrcode: req.params.idqrcode };
-      const { nama_pembeli, nomor_polisi, merk_mobil, no_invoice, deskripsi } =
+      const { nama_pembeli, nomor_polisi, merk_mobil, no_invoice, deskripsi, instagram } =
         req.body;
 
       let today = new Date();
@@ -14,15 +17,14 @@ class PembeliController {
       let mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
       let yyyy = today.getFullYear();
 
-      today =  dd + "/" + mm + "/" + yyyy;
-      // console.log(req);
-      // console.log(req.body);
+      today = dd + "/" + mm + "/" + yyyy;
       const updatedData = {
         nama_pembeli,
         nomor_polisi,
         merk_mobil,
         no_invoice,
         deskripsi,
+        instagram,
         tanggal_input: today,
       };
 
@@ -48,12 +50,12 @@ class PembeliController {
     }
   }
 
-  static async updateimage(req, res, next) {
+  static async updateMultiImage(req, res, next) {
     try {
       const query = { _idQrcode: req.params.idqrcode };
       const myFile = req.files;
       const tempPush = [];
-      const imageUrl = await uploadImage(myFile);
+      const imageUrl = await uploadImageVideoMultiple(myFile);
       tempPush.push(imageUrl);
       const pembeli = await PembeliModel.findOneAndUpdate(
         query,
@@ -77,12 +79,150 @@ class PembeliController {
     }
   }
 
+  static async updateImage1(req, res, next) {
+    try {
+      const query = { _idQrcode: req.params.idqrcode };
+      const myFile = req.files;
+      const imageUrl = await uploadImageVideoMultiple(myFile);
+      const pembeli = await PembeliModel.findOneAndUpdate(
+        query,
+        { image1: imageUrl },
+        { new: true }
+      );
+      await Excel.findOneAndUpdate(
+        query,
+        { image1: imageUrl },
+        { new: true }
+      );
+      res
+        .status(200)
+        .json({ success: true, message: "success", data: pembeli });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async updateImage2(req, res, next) {
+    try {
+      const query = { _idQrcode: req.params.idqrcode };
+      const myFile = req.files;
+      const imageUrl = await uploadImageVideoMultiple(myFile);
+      const pembeli = await PembeliModel.findOneAndUpdate(
+        query,
+        { image2: imageUrl },
+        { new: true }
+      );
+      await Excel.findOneAndUpdate(
+        query,
+        { image2: imageUrl },
+        { new: true }
+      );
+      res
+        .status(200)
+        .json({ success: true, message: "success", data: pembeli });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async updateImage3(req, res, next) {
+    try {
+      const query = { _idQrcode: req.params.idqrcode };
+      const myFile = req.files;
+      const imageUrl = await uploadImageVideoMultiple(myFile);
+      const pembeli = await PembeliModel.findOneAndUpdate(
+        query,
+        { image3: imageUrl },
+        { new: true }
+      );
+      await Excel.findOneAndUpdate(
+        query,
+        { image3: imageUrl },
+        { new: true }
+      );
+      res
+        .status(200)
+        .json({ success: true, message: "success", data: pembeli });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async updateImage4(req, res, next) {
+    try {
+      const query = { _idQrcode: req.params.idqrcode };
+      const myFile = req.files;
+      const imageUrl = await uploadImageVideoMultiple(myFile);
+      const pembeli = await PembeliModel.findOneAndUpdate(
+        query,
+        { image4: imageUrl },
+        { new: true }
+      );
+      await Excel.findOneAndUpdate(
+        query,
+        { image4: imageUrl },
+        { new: true }
+      );
+      res
+        .status(200)
+        .json({ success: true, message: "success", data: pembeli });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async updateImage5(req, res, next) {
+    try {
+      const query = { _idQrcode: req.params.idqrcode };
+      const myFile = req.files;
+      const imageUrl = await uploadImageVideoMultiple(myFile);
+      const pembeli = await PembeliModel.findOneAndUpdate(
+        query,
+        { image5: imageUrl },
+        { new: true }
+      );
+      await Excel.findOneAndUpdate(
+        query,
+        { image5: imageUrl },
+        { new: true }
+      );
+      res
+        .status(200)
+        .json({ success: true, message: "success", data: pembeli });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async updateImage6(req, res, next) {
+    try {
+      const query = { _idQrcode: req.params.idqrcode };
+      const myFile = req.files;
+      const imageUrl = await uploadImageVideoMultiple(myFile);
+      const pembeli = await PembeliModel.findOneAndUpdate(
+        query,
+        { image6: imageUrl },
+        { new: true }
+      );
+      await Excel.findOneAndUpdate(
+        query,
+        { image6: imageUrl },
+        { new: true }
+      );
+      res
+        .status(200)
+        .json({ success: true, message: "success", data: pembeli });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   static async updatevideo(req, res, next) {
     try {
       const query = { _idQrcode: req.params.idqrcode };
       const myFile = req.files;
       const tempPush = [];
-      const videoUrl = await uploadImage(myFile);
+      const videoUrl = await uploadImageVideoMultiple(myFile);
       tempPush.push(videoUrl);
       const pembeli = await PembeliModel.findOneAndUpdate(
         query,

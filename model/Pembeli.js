@@ -16,8 +16,15 @@ const pembeliSchema = new Schema(
     merk_mobil: { type: String, default: "" },
     no_invoice: { type: String, default: "" },
     deskripsi: { type: String, default: "" },
-    image: { type: [String] },
+    image1: { type: String, default: "" },
+    image2: { type: String, default: "" },
+    image3: { type: String, default: "" },
+    image4: { type: String, default: "" },
+    image5: { type: String, default: "" },
+    image6: { type: String, default: "" },
+    instagram: { type: String, default: "" },
     video: { type: [String] },
+
   },
   {
     timestamps: { createdAt: "created_at", updatedAt: "tanggal_pengisian" },

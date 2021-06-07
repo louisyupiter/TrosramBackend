@@ -92,14 +92,17 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-const images = multer({
+const imagesMultiAdd = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 5000000 },
 }).any();
 
 const videos = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 10000000 },
+  limits: { fileSize: 20000000 },
 }).any();
 
-module.exports = { images, videos };
+module.exports = {
+  imagesMultiAdd,
+  videos,
+};

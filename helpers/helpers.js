@@ -11,10 +11,9 @@ const bucket = gc.bucket("osram"); // should be your bucket name
  *   "originalname" and "buffer" as keys
  */
 
-const uploadImage = (file) =>
+const uploadImageVideoMultiple = (file) =>
   new Promise((resolve, reject) => {
     file.forEach((fil) => {
-      console.log(fil);
       let blob = "";
       if (fil.fieldname === "image") {
         blob = bucket.file(
@@ -41,4 +40,25 @@ const uploadImage = (file) =>
     });
   });
 
-module.exports = uploadImage;
+const uploadImageSingle = (file) =>
+  new Promise((resolve, reject) => {
+    const { originalname, buffer } = file;
+
+    const blob = bucket.file("uploads/image/" + Date.now() + originalname.replace(/ /g, "_"));
+    const blobStream = blob.createWriteStream({
+      resumable: false,
+    });
+    blobStream
+      .on("finish", () => {
+        const publicUrl = format(
+          `https://storage.googleapis.com/${bucket.name}/${blob.name}`
+        );
+        resolve(publicUrl);
+      })
+      .on("error", () => {
+        reject(`Unable to upload image, something went wrong`);
+      })
+      .end(buffer);
+  });
+
+module.exports = { uploadImageVideoMultiple, uploadImageSingle };

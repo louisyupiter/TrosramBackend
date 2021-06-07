@@ -24,7 +24,6 @@ class UserController {
         username: req.body.username,
         password: req.body.password,
       });
-      console.log(userValidated);
       if (userValidated) {
         res.status(200).json({
           success: true,
