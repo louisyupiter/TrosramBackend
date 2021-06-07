@@ -94,12 +94,12 @@ const fileFilter = (req, file, cb) => {
 
 const imagesMultiAdd = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 5000000 },
+  limits: { fileSize: 5 * 1024 * 1024 },
 }).any();
 
 const videos = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 20000000 },
+  limits: { fileSize: 20 * 1024 * 1024 },
 }).any();
 
 module.exports = {
